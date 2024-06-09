@@ -34,15 +34,18 @@ class WikiArt(object):
 
 
 class WikiArtD(Dataset):
-    def __init__(self, root_dir, split, transform=None):
+    def __init__(self, root_dir, split, transform=None, csv='wikiart.csv'):
         self.root_dir = root_dir
         self.transform = transform
         self.split = split
-        assert osp.exists(osp.join(root_dir, 'wikiart.csv'))
-        annotations = vx.from_csv(f'{self.root_dir}/wikiart.csv')
-        acceptable_artists = list(set(annotations[annotations['split'] == 'database']['artist'].tolist()))
-        temprepo = annotations[annotations['artist'].isin(acceptable_artists)]
-        self.pathlist = temprepo[temprepo['split'] == split]['path'].tolist()
+        # assert osp.exists(osp.join(root_dir, 'wikiart.csv'))
+        # annotations = vx.from_csv(f'{self.root_dir}/wikiart.csv')
+        assert osp.exists(osp.join(root_dir, csv))
+        annotations = vx.from_csv(f'{self.root_dir}/{csv}')
+        # acceptable_artists = list(set(annotations[annotations['split'] == 'database']['artist'].tolist()))
+        # temprepo = annotations[annotations['artist'].isin(acceptable_artists)]
+        # self.pathlist = temprepo[temprepo['split'] == split]['path'].tolist()
+        self.pathlist = annotations['path'].tolist()
 
         self.namelist = list(map(lambda x: x.split('/')[-1], self.pathlist))
 

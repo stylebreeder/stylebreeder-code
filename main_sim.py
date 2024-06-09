@@ -38,7 +38,8 @@ from data.wikiart import WikiArtD
 
 parser = argparse.ArgumentParser('dynamicDistances-Embedding Generation Module')
 parser.add_argument('--dataset', type=str, required=True, help="Name of the dataset",
-                    choices=['wikiart'])
+                    # choices=['wikiart']
+                    )
 
 parser.add_argument('--qsplit', default='query', choices=['query', 'database'], type=str, help="The inferences")
 parser.add_argument('--data-dir', type=str, default=None,
@@ -273,7 +274,9 @@ def main_worker(gpu, ngpus_per_node, args):
         dataset_query = WikiArtD(args.data_dir, args.qsplit, ret_transform)
         dataset_values = WikiArtD(args.data_dir, 'database', ret_transform)
     else:
-        raise NotImplementedError
+        # raise NotImplementedError
+        dataset_query = WikiArtD(args.data_dir, args.qsplit, ret_transform, f'{args.data_dir}.csv')
+        dataset_values = WikiArtD(args.data_dir, 'database', ret_transform, f'{args.data_dir}.csv')
 
     ## creating dataloader
     if args.distributed:
