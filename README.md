@@ -4,7 +4,9 @@ First, download the model checkpoint for ViT-L [here](https://drive.google.com/f
 
 Use `sample_imgs_and_to_csv.py` to create a csv file for the image dataset:
 
-```python sample_imgs_and_to_csv.py <IMAGES DIRECTORY PATH>```
+```
+python sample_imgs_and_to_csv.py <IMAGES DIRECTORY PATH>
+```
 
 Then generate embeddings for the images:
 
