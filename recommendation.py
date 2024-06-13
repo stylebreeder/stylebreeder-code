@@ -54,10 +54,12 @@ cluster_counts = np.bincount(loaded_kmeans.labels_)
 # Get clusters with more than 10 elements
 selected_clusters = np.where(cluster_counts > 10)[0]
 
+# Group by creator and labels and count the number of elements in each group
 k = 10000
 label_counts = user_cluster.groupby(['creator_id', 'labels']).size().unstack(fill_value=0)
 label_counts = label_counts.reindex(columns=np.arange(k), fill_value=0)
 
+# Vectorize the number of images per cluster for each creator and normalize
 creator_vectors = {creator: row.values / np.linalg.norm(row.values) for creator, row in label_counts.iterrows()}
 filtered_creator_vectors = {
     creator: vector[selected_clusters] / np.linalg.norm(vector[selected_clusters])
@@ -67,12 +69,14 @@ filtered_creator_vectors = {
 triples = [(creator_id, selected_clusters[i], val) for creator_id, vector in filtered_creator_vectors.items()
            for i, val in enumerate(vector) if val > 0]
 
+# Convert to DataFrame and load into a surprise dataset
 recommend_df = pd.DataFrame(triples, columns=['userID', 'itemID', 'rating'])
-
 reader = Reader(rating_scale=(0, 1))
 
+# Split the dataset into training and test sets
 recommend_data = Dataset.load_from_df(recommend_df[["userID", "itemID", "rating"]], reader)
 trainset, testset = train_test_split(recommend_data, test_size=0.2, random_state=0)
 
+# Cross validate using SVD
 algo = SVD(random_state=0)
 print(cross_validate(algo, recommend_data, measures=["RMSE", "MAE"], cv=5, verbose=True))

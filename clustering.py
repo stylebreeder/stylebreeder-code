@@ -20,9 +20,11 @@ def convert_embeddings(file_paths):
     
     return database_embeddings
 
+# Load embeddings
 database_embeddings = convert_embeddings(database_embeddings_path)
 embeddings = {key: val for key,val in zip(database_embeddings['filenames'], database_embeddings['embeddings'])}
 
+# KMeans on embeddings
 normalized_embeddings = normalize(np.array(list(embeddings.values())))
 k = 10000
 kmeans = KMeans(n_clusters=k, init='k-means++', random_state=42)
