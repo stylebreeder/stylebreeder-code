@@ -23,3 +23,7 @@ python predict_clusters.py <EMBEDDING DIRECTORY> kmeans_model.pkl
 This will save the labels into a txt file titled `predicted_cluster_labels.txt`
 
 To run recommendation, use the `recommendation.py` file and replace the path with the path to the embeddings you want to test.
+
+```
+python recommendation.py <TEST EMBEDDING DIRECTORY> kmeans_model.pkl
+```
