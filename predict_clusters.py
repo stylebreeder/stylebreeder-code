@@ -33,7 +33,6 @@ if __name__ == '__main__':
     normalized_embeddings = normalize(np.array(list(embeddings.values())))
 
     # Load the entire model
-    # kmeans_path = './kmeans_model.pkl'
     kmeans_path = sys.argv[2]
     with open(kmeans_path, 'rb') as file:
         loaded_kmeans = pickle.load(file)
